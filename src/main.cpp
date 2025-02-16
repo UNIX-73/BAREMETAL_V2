@@ -1,7 +1,8 @@
 #include <common.h>
 #include <peripherals/gpio.hpp>
 #include "utils/utils.h"
-#include "uart/uart.hpp"
+#include "peripherals/uart.hpp"
+#include "arm/interrupts/irq.h"
 
 void UIntToStr(u32 num, char *str)
 {
@@ -25,7 +26,13 @@ void UIntToStr(u32 num, char *str)
 
 extern "C" void kernel_main()
 {
+
     GPIO::SetFunctionSelect(21, GPIO::FUNCTION_SELECT_OPTIONS::OUTPUT);
+
+    irq_init_vectors();
+    enable_interrupt_controller();
+    irq_enable();
+
     UART::UartInit();
 
     char buffer[12];
