@@ -60,7 +60,7 @@ namespace UART
         REGS_UART0->FBRD = 3;  // Parte fraccionaria
 
         // 5. Configurar el formato del frame: 8 bits, sin paridad, 1 bit de stop
-        REGS_UART0->LCRH = (1 << 4) | (1 << 5) | (1 << 6); // FIFO enable y 8 bits
+        REGS_UART0->LCRH = (0b11 << 5) | (1 << 4); // FIFO enable y 8 bits
 
         // 6. Habilitar UART, TX y RX
         REGS_UART0->CR = (1 << 0) | (1 << 8) | (1 << 9);
