@@ -1,5 +1,6 @@
 #include <common.h>
 #include <peripherals/gpio.hpp>
+#include "peripherals/uart/uart_rx_buffer.hpp"
 
 // Estructura que mapea los registros del UART0
 struct uart_regs
@@ -35,9 +36,8 @@ struct uart_regs
 #define UART0_IRQ 57
 #define IRQ_ENABLE_2 ((reg32 *)(PERIPHERAL_BASE + 0xB214))
 
-namespace UART
+namespace uart
 {
-
     inline void send_string(const char *str);
 
     inline void uart_init()
@@ -72,7 +72,7 @@ namespace UART
         REGS_UART0->IMSC = (1 << 4); // Habilitar la interrupción por recepción (RXIM)
         *IRQ_ENABLE_2 |= (1 << (UART0_IRQ - 32));
 
-        UART::send_string("UART INITIALIZED\r\n");
+        uart::send_string("UART INITIALIZED\r\n");
     }
 
     inline void send(char c)
@@ -93,31 +93,6 @@ namespace UART
         }
     }
 
-    inline char receive()
-    {
-        // Esperar mientras el FIFO de recepción esté vacío
-        while (REGS_UART0->FR & (1 << 4))
-        {
-            // Espera
-        }
-        return REGS_UART0->DR & 0xFF; // Se retorna solo el byte recibido
-    }
-
-    inline void receive_string(char *buffer, int max_length)
-    {
-        int i = 0;
-        while (i < max_length - 1)
-        {
-            char c = receive();
-            if (c == '\r' || c == '\n')
-            {
-                break;
-            }
-            buffer[i++] = c;
-        }
-        buffer[i] = '\0';
-    }
-
     namespace IRQ_MANAGER
     {
         inline void handle_irq_mis()
@@ -125,19 +100,18 @@ namespace UART
             //  RX
             if (REGS_UART0->MIS & (0b1 << 4))
             {
-                REGS_UART0->ICR = (0b1 << 4);
-
                 while (!(REGS_UART0->FR & (0b1 << 4)))
                 {
                     volatile char c = REGS_UART0->DR;
-                    UART::send('\n');
-                    UART::send('\r');
+                    uart_rx_buffer::handle_interrupt(c);
 
-                    UART::send(c); // No funciona creo
+                    // Es para testeo, luego borrar
+                    uart::send_string("received text:\n\r");
+                    uart::send(c);
                 }
-
-                UART::send_string("received text\n\r"); // TODO: leer el texto que se recibe
             }
+
+            REGS_UART0->ICR = (0b1 << 4);
         }
     }
 }

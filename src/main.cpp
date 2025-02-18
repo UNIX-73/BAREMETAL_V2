@@ -33,22 +33,22 @@ extern "C" void kernel_main()
     enable_interrupt_controller();
     irq_enable();
 
-    UART::uart_init();
+    uart::uart_init();
 
     char buffer[12];
     u32 el = get_el();
     UIntToStr(el, buffer);
-    UART::send_string("EL level: \r\n");
-    UART::send_string(buffer);
-    UART::send_string("\n\r");
+    uart::send_string("EL level: \r\n");
+    uart::send_string(buffer);
+    uart::send_string("\n\r");
 
     while (1)
     {
-        UART::send_string("On\r\n");
+        uart::send_string("On\r\n");
         GPIO::SetPin(21);
         delay(10000000);
 
-        UART::send_string("Off\r\n");
+        uart::send_string("Off\r\n");
         GPIO::ClearPin(21);
         delay(10000000);
     }

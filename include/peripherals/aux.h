@@ -4,7 +4,7 @@
 
 #include "peripherals/peripheralBase.h"
 
-struct AuxRegs
+struct aux_regs
 {
     reg32 irq_status;
     reg32 enables;

@@ -29,7 +29,7 @@ const char entry_error_messages[16][32] = {
 
 void show_invalid_entry_message(u32 type, u64 esr, u64 address)
 {
-    UART::send_string("INVALID ENTRY\n\r");
+    uart::send_string("INVALID ENTRY\n\r");
 }
 
 void handle_irq()
@@ -38,10 +38,10 @@ void handle_irq()
 
     irq = REGS_IRQ->irq0_pending_1;
 
-    UART::send_string("Interrupt\n\r");
+    uart::send_string("Interrupt\n\r");
 
-    //TODO: Validar que tipo de pending hay antes
-    UART::IRQ_MANAGER::handle_irq_mis();
+    // TODO: Validar que tipo de pending hay antes
+    uart::IRQ_MANAGER::handle_irq_mis();
 }
 
 void enable_interrupt_controller()
