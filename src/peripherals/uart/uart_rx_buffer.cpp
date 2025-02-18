@@ -1,4 +1,5 @@
-#include "uart_rx_buffer.hpp"
+#include "peripherals/uart/uart_rx_buffer.hpp"
+#include <peripherals/uart.hpp>
 
 u8 uart_rx_buffer::rx_buffer[uart_rx_buffer::BUFFER_SIZE] = {0};
 u32 uart_rx_buffer::rx_head = 0;

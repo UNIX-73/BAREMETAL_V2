@@ -1,7 +1,6 @@
 #pragma once
 
 #include <common.h>
-#include "peripherals/uart.hpp"
 
 class uart_rx_buffer
 {
