@@ -24,6 +24,8 @@ void UIntToStr(u32 num, char *str)
     }
 }
 
+extern "C" void hello_from_rust();
+
 extern "C" void kernel_main()
 {
 
@@ -35,6 +37,10 @@ extern "C" void kernel_main()
 
     uart::uart_init();
 
+    delay(2000);
+
+    hello_from_rust();
+
     char buffer[12];
     u32 el = get_el();
     UIntToStr(el, buffer);
@@ -42,10 +48,9 @@ extern "C" void kernel_main()
     uart::send_string(buffer);
     uart::send_string("\n\r");
 
-    
-
     while (1)
     {
-        
+        hello_from_rust();
+        delay(1000000);
     }
 }

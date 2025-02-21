@@ -9,10 +9,11 @@ ELF_DIR      := $(BUILD_DIR)/elf
 
 ARMGNU       := aarch64-none-elf
 
-# Opciones de compilación
+# Opciones de compilación para C, C++, Rust y ASM
 CFLAGS       := -Wall -nostdlib -nostartfiles -ffreestanding $(addprefix -I, $(SRC_DIR) $(INCLUDE_DIR)) -mgeneral-regs-only
 CPPFLAGS     := -Wall -nostdlib -nostartfiles -ffreestanding $(addprefix -I, $(SRC_DIR) $(INCLUDE_DIR)) -mgeneral-regs-only
 ASMFLAGS     := $(addprefix -I, $(INCLUDE_DIR))
+RUSTFLAGS    := -C opt-level=3
 
 # ================================================================
 # Recopilación de archivos fuente (buscando recursivamente)
@@ -20,11 +21,13 @@ ASMFLAGS     := $(addprefix -I, $(INCLUDE_DIR))
 C_SRC    := $(shell find $(SRC_DIR) -type f -name '*.c')
 CPP_SRC  := $(shell find $(SRC_DIR) -type f -name '*.cpp')
 ASM_SRC  := $(shell find $(SRC_DIR) -type f -name '*.S')
+RUST_SRC := $(shell find $(SRC_DIR) -type f -name '*.rs')
 
 OBJ_C    := $(patsubst $(SRC_DIR)/%.c,   $(OBJ_DIR)/%_c.o,   $(C_SRC))
 OBJ_CPP  := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%_cpp.o, $(CPP_SRC))
 OBJ_ASM  := $(patsubst $(SRC_DIR)/%.S,   $(OBJ_DIR)/%_s.o,   $(ASM_SRC))
-OBJECTS  := $(OBJ_C) $(OBJ_CPP) $(OBJ_ASM)
+OBJ_RUST := $(patsubst $(SRC_DIR)/%.rs,  $(OBJ_DIR)/%_rust.o, $(RUST_SRC))
+OBJECTS  := $(OBJ_C) $(OBJ_CPP) $(OBJ_ASM) $(OBJ_RUST)
 
 ifeq ($(strip $(OBJECTS)),)
    $(warning No se encontraron archivos fuente en $(SRC_DIR))
@@ -53,6 +56,11 @@ $(OBJ_DIR)/%_s.o: $(SRC_DIR)/%.S
 	@echo "Compilando ASM: $<"
 	$(ARMGNU)-gcc $(ASMFLAGS) -c $< -o $@
 
+$(OBJ_DIR)/%_rust.o: $(SRC_DIR)/%.rs
+	@mkdir -p $(@D)
+	@echo "Compilando Rust: $<"
+	rustc --target=aarch64-unknown-none $(RUSTFLAGS) --crate-type=staticlib --emit=obj -o $@ $<
+
 # ------------------------------------------------
 # Enlace y generación del kernel final
 # ------------------------------------------------
@@ -75,7 +83,7 @@ $(BUILD_DIR)/kernel8.img: $(ELF_DIR)/kernel8.elf
 
 clean:
 	@echo "Limpiando el directorio build..."
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD_DIR)/*
 
 # ================================================================
 # armstub (compilación separada)

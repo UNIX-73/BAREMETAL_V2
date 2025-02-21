@@ -97,6 +97,7 @@ namespace uart
     {
         inline void handle_irq_mis()
         {
+            uart::send('A');
             //  RX
             if (REGS_UART0->MIS & (0b1 << 4))
             {
