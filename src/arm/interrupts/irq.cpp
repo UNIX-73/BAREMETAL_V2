@@ -34,9 +34,9 @@ void show_invalid_entry_message(u32 type, u64 esr, u64 address)
 
 void handle_irq()
 {
-    u32 irq;
+    // u32 irq;
 
-    irq = REGS_IRQ->irq0_pending_1;
+    // irq = REGS_IRQ->irq0_pending_1;
 
     uart::send_string("Interrupt\n\r");
 

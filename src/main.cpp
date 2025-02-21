@@ -42,14 +42,10 @@ extern "C" void kernel_main()
     uart::send_string(buffer);
     uart::send_string("\n\r");
 
+    
+
     while (1)
     {
-        uart::send_string("On\r\n");
-        GPIO::SetPin(21);
-        delay(10000000);
-
-        uart::send_string("Off\r\n");
-        GPIO::ClearPin(21);
-        delay(10000000);
+        
     }
 }
