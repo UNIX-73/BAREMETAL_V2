@@ -24,7 +24,7 @@ void UIntToStr(u32 num, char *str)
     }
 }
 
-extern "C" void hello_from_rust();
+extern "C" void rust_init();
 
 extern "C" void kernel_main()
 {
@@ -39,7 +39,7 @@ extern "C" void kernel_main()
 
     delay(2000);
 
-    hello_from_rust();
+    rust_init();
 
     char buffer[12];
     u32 el = get_el();
@@ -50,7 +50,7 @@ extern "C" void kernel_main()
 
     while (1)
     {
-        hello_from_rust();
+        uart::send_string("Code arrived to cpp loop \n\r");
         delay(1000000);
     }
 }

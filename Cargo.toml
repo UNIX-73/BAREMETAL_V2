@@ -7,4 +7,5 @@ edition = "2024"
 
 
 [lib]
-test = false
+name = "baremetal_rust"
+path = "src/lib.rs"
