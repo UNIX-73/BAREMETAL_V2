@@ -8,4 +8,5 @@ edition = "2024"
 
 [lib]
 name = "baremetal_rust"
-path = "src/lib.rs"
+path = "src/rust_crate/lib.rs"
+crate-type = ["staticlib"]

@@ -3,6 +3,7 @@
 #include "utils/utils.h"
 #include "peripherals/uart.hpp"
 #include "arm/interrupts/irq.h"
+#include "external/rust_fn.h"
 
 void UIntToStr(u32 num, char *str)
 {
@@ -24,11 +25,9 @@ void UIntToStr(u32 num, char *str)
     }
 }
 
-extern "C" void rust_init();
 
 extern "C" void kernel_main()
 {
-
     GPIO::SetFunctionSelect(21, GPIO::FUNCTION_SELECT_OPTIONS::OUTPUT);
 
     irq_init_vectors();
