@@ -25,7 +25,6 @@ void UIntToStr(u32 num, char *str)
     }
 }
 
-
 extern "C" void kernel_main()
 {
     GPIO::SetFunctionSelect(21, GPIO::FUNCTION_SELECT_OPTIONS::OUTPUT);
@@ -38,8 +37,6 @@ extern "C" void kernel_main()
 
     delay(2000);
 
-    rust_init();
-
     char buffer[12];
     u32 el = get_el();
     UIntToStr(el, buffer);
@@ -47,6 +44,9 @@ extern "C" void kernel_main()
     uart::send_string(buffer);
     uart::send_string("\n\r");
 
+    rust_init();
+
+    uart::send_string("Code broke from rust \n\r");
     while (1)
     {
         uart::send_string("Code arrived to cpp loop \n\r");

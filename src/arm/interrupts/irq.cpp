@@ -38,8 +38,6 @@ void handle_irq()
 
     // irq = REGS_IRQ->irq0_pending_1;
 
-    uart::send_string("Interrupt\n\r");
-
     // TODO: Validar que tipo de pending hay antes
     uart::IRQ_MANAGER::handle_irq_mis();
 }

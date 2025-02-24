@@ -1,6 +1,7 @@
 #include <common.h>
 #include <peripherals/gpio.hpp>
 #include "peripherals/uart/uart_rx_buffer.hpp"
+#include "external/rust_fn.h"
 
 // Estructura que mapea los registros del UART0
 struct uart_regs
@@ -97,21 +98,18 @@ namespace uart
     {
         inline void handle_irq_mis()
         {
-            uart::send('A');
             //  RX
             if (REGS_UART0->MIS & (0b1 << 4))
             {
                 while (!(REGS_UART0->FR & (0b1 << 4)))
                 {
                     volatile char c = REGS_UART0->DR;
-                    uart_rx_buffer::handle_interrupt(c);
 
-                    // Es para testeo, luego borrar
-                    uart::send_string("received text:\n\r");
-                    uart::send(c);
+                    rs_uart_irq::handle_irq_uart_rx_buffer(c);
                 }
             }
 
+            rs_uart_irq::handle_irq_uart_rx();
             REGS_UART0->ICR = (0b1 << 4);
         }
     }
