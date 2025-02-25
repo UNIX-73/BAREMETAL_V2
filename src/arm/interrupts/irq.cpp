@@ -52,7 +52,8 @@ void show_invalid_entry_message(u32 type, u64 esr, u64 address)
     char address_buffer[64];
     UIntToStr(address, address_buffer);
 
-    uart::send_string("\r\nWAITING FOR REBOOT...\r\n");
+    uart::send_string("\r\n\n\n\n");
+    uart::send_string("WAITING FOR REBOOT...\r\n");
 
     delay(5000000);
 
