@@ -3,7 +3,7 @@
 #include "utils/utils.h"
 #include "arm/interrupts/ir_entry.h"
 #include "peripherals/irq.h"
-#include "peripherals/aux.h"
+#include "peripherals/aux_.h"
 #include "peripherals/uart.hpp"
 
 const char entry_error_messages[16][32] = {
