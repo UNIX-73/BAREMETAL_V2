@@ -12,7 +12,7 @@ The goal was to learn how ARM-based systems boot and communicate with hardware a
 - Real hardware deployment (not emulated)
 - Structured Makefile-based build system
 
-These versions laid the foundation for a more robust and modular rewrite using Rust that includes a uart terminal.
+These versions laid the foundation for a more robust and modular rewrite using Rust that includes a UART terminal.
 
 ## See the latest version
 
