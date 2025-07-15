@@ -18,4 +18,4 @@ These versions laid the foundation for a more robust and modular rewrite using R
 
 For the latest and most complete version (rewritten in Rust + ASM, with UART input and terminal interface), visit:
 
-👉 [Final version (V3)](https://github.com/UNIX-73/baremetal_v3)
+[Final version (V3)](https://github.com/UNIX-73/baremetal_v3)
